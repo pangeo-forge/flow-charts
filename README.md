@@ -5,4 +5,4 @@ Flow charts describing various aspects of Pangeo Forge architecture.
 
 | CI Flow Diagram | With callstack annotations |
 | --------------- | -------------------------- |
-| ![CI Flow Diagram of Pangeo Forge](ci-flow.png "Title") | ![CI Flow Diagram of Pangeo Forge](ci-flow-with-callstack.png "Title") |
+| ![CI Flow Diagram of Pangeo Forge](renders/ci-flow.png "Title") | ![CI Flow Diagram of Pangeo Forge](renders/ci-flow-with-callstack.png "Title") |
