@@ -3,7 +3,7 @@ digraph architecture {
     
     recipe [shape=note, label="recipe.py", fillcolor=lightsalmon1]
     
-    files [shape=folder, label="source\ndata"]
+    files [shape=folder, label="Source\ndata"]
     arco [label="ARCO\ndata", fillcolor=lightblue]
     bakery [shape=box, fillcolor=plum, label="Bakery\ncompute\ninfrastructure"]
     source [shape=cylinder, label="Traditional\ndata archive\n(HTTP, FTP, etc.)", margin="0.25"]
