@@ -1,0 +1,33 @@
+digraph architecture {
+    node [style="filled", fontname="Roboto"];
+    
+    recipe [shape=note, label="recipe.py", fillcolor=lightsalmon1]
+    
+    files [shape=folder, label="Source\ndata"]
+    arco [label="ARCO\ndata", fillcolor=lightblue]
+    bakery [shape=box, fillcolor=plum, label="Bakery\ncompute\ninfrastructure"]
+    source [shape=cylinder, label="Traditional\ndata archive\n(HTTP, FTP, etc.)", margin="0.25"]
+    target [shape=invtrapezium, fillcolor=lightcoral, label="Cloud\nbucket"]
+    catalog [shape=component, fillcolor=lightseagreen]
+    user [shape=circle, label="User"]
+
+    recipe -> bakery 
+    source -> files [arrowhead=none]
+    files -> bakery
+    bakery -> arco [arrowhead=none]
+    arco -> target
+    source -> recipe:w [style=dashed, xlabel="Encodes source\nfile locations"]
+    recipe:e -> arco:n [style=dashed, label="Defines ARCO\nformat details"]
+    target:s -> catalog:n [arrowhead=none]
+    catalog -> user
+
+    {rank=min; recipe}
+    {rank=same; source; files; bakery; arco; target}
+    {rank=same; catalog; user}
+
+    edge[style=invis];
+    bakery -> user
+    source -> user
+    user -> bakery
+}
+
