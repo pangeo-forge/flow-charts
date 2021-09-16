@@ -40,7 +40,7 @@ digraph recipes {
 
 
 	cache_inputs:e -> cache_bucket:n;
-	prepare_target -> cache_bucket [arrowhead=none, color=purple, style=bold, constraint=false];
+	prepare_target -> cache_bucket [arrowhead=none, color=purple, constraint=false];
 	store_chunks -> cache_bucket [arrowhead=none, color=purple, style=bold, constraint=false];
 	cache_bucket -> arco_bucket [color=purple, style=bold];
 	cache_bucket -> arco_bucket [color=purple];
