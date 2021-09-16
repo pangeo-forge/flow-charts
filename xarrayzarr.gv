@@ -1,0 +1,52 @@
+digraph recipes {    
+	node [style="filled, rounded", shape=box, fontname="Roboto", margin="0.3,0"];
+	newrank=true;
+
+	subgraph cluster_sources {
+		node [style=filled, fillcolor=grey90];
+		label = "";
+		color=white;
+		f0, f1, f2 [shape=note, label=".nc"]
+		f3 [shape=cylinder, label="Traditional\ndata archive", margin="0.25"]
+		f0 -> f1 -> f2 -> f3 [arrowhead=none, style=dotted];
+		
+	};
+
+	
+	subgraph cluster_algorithm {
+		node [style="filled, rounded", fillcolor=lightsteelblue1];
+		label = "XarrayZarrRecipe\nalgorithm";
+		style=filled;
+		color=grey94;
+
+		cache_inputs -> prepare_target [style=dashed];
+		prepare_target -> store_chunks [style=dashed];
+		store_chunks -> finalize_target [style=dashed];
+
+	};
+
+    subgraph cluster_buckets {
+		node [style=filled, margin="0.15,0.075", fillcolor=lightcoral, shape=invtrapezium];
+		label = "";
+		style=filled;
+		color=white;
+		
+		cache_bucket [label="Cache\nbucket"];
+		arco_bucket [label="ARCO\nbucket"];
+
+	};
+
+	f0 -> cache_inputs [arrowhead=none, constraint=false];
+
+
+	cache_inputs:e -> cache_bucket:n;
+	prepare_target -> cache_bucket [arrowhead=none, color=purple, style=bold, constraint=false];
+	store_chunks -> cache_bucket [arrowhead=none, color=purple, style=bold, constraint=false];
+	cache_bucket -> arco_bucket [color=purple, style=bold];
+	cache_bucket -> arco_bucket [color=purple];
+	finalize_target -> arco_bucket [constraint=false]
+	{rank=same; finalize_target; arco_bucket}
+	{rank=same; prepare_target; cache_bucket}
+}
+
+

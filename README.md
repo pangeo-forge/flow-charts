@@ -9,8 +9,13 @@ Charts are developed with http://graphviz.org/. Two options for interactively de
 
 | CI Flow Diagram | With callstack annotations |
 | --------------- | -------------------------- |
-| ![CI Flow Diagram of Pangeo Forge](renders/ci-flow.png "Title") | ![CI Flow Diagram of Pangeo Forge](renders/ci-flow-with-callstack.png "Title") |
+| ![CI Flow Diagram of Pangeo Forge](renders/ci-flow.png) | ![CI Flow Diagram of Pangeo Forge with callstack](renders/ci-flow-with-callstack.png) |
 
 | Architecture: high level view |
 | ----------------------------- |
-| ![CI Flow Diagram of Pangeo Forge](renders/architecture.png "Title") 
+| ![Architecture of Pangeo Forge](renders/architecture.png) 
+
+
+| XarrayZarrRecipe algorithm details |
+| ----------------------------- |
+| ![XarrayZarrRecipe algorithm details](renders/xarrayzarr.png) 
