@@ -1,0 +1,124 @@
+digraph prof {
+    node [style="filled, rounded", shape=box, fontname="Roboto", fontsize=18, margin="0.5,0.25"];
+    
+    /* ------- COLOR-CODED NODE "CLASSES" ------- */
+    
+    /* Human actions */
+    pr, commits0, commits1, runrecipetest, merge,
+    release [color=palegreen];
+    
+    /* Execution steps, flow control, etc. */
+    // lintgate, registertest, runflow, flowexit, flowsuccess, updatecomment, newrepo, buildrecipe, exitgate, stac [color=khaki];
+    lintgate, registertest, flowsuccess, newrepo, buildrecipe, exitgate, stac [color=khaki];
+    
+    /* Inline labels */
+    Test, Full [color=white, margin="0,0"];
+    
+    /* Errors */
+    error0, error1 [color=pink, label="Error"];
+    
+    
+    /* ------- NODE LABELS ------- */
+    
+    pr [label="Recipe PR opened"];
+    commits0, commits1 [label="PR edits"];
+    lintgate [label="PR meets spec?"]
+    runrecipetest [label="Test execution"]
+    registertest [label="Register test Flow"]
+    // runflow [label="Run Flow"]
+    etl [label="Run ETL algorithm"]
+    // flowexit [label="POST exit state"]
+    // updatecomment [label="`/run-recipe-test` comment updated"]
+    flowsuccess [label="Success?"]
+    merge [label="Merge PR"]
+    newrepo [label="Feedstock repo created"]
+    release [label="Tag and release Feedstock repo"]
+    buildrecipe [label="Register full Flow"]
+    exitgate [label="Flow type?"]
+    stac [label="Generate STAC object"]
+    
+    /* ------- GRAPH CONNECTIONS ------- */
+    
+    /* Control flow connections */
+    
+    pr -> lintgate [arrowhead=none]
+    lintgate -> error0 [color=red]
+    error0  -> commits0
+    commits0 -> lintgate
+    lintgate -> runrecipetest [color=green]
+    runrecipetest -> registertest
+    // registertest -> runflow
+    // runflow -> etl
+    registertest:s -> etl:n
+    // etl -> flowexit [arrowhead=none]
+    // flowexit -> exitgate [arrowhead=none]
+    etl -> exitgate [arrowhead=none]
+    exitgate -> Test [arrowhead=none]
+    // Test -> updatecomment
+    exitgate -> Full [arrowhead=none]
+    Full -> stac
+    stac -> Done
+    // updatecomment -> flowsuccess [arrowhead=none]
+    Test -> flowsuccess [arrowhead=none]
+    flowsuccess -> error1 [color=red]
+    error1 -> commits1
+    commits1 -> runrecipetest
+    flowsuccess -> merge [color=green]
+    merge -> newrepo [arrowhead=none]
+    newrepo -> release 
+    release -> buildrecipe
+    // buildrecipe -> runflow
+    buildrecipe:s -> etl:n
+    
+    {rank = same; registertest; buildrecipe;}
+    {rank = same; runrecipetest; release;}
+    
+    /* ------- CALL STACK -------      
+
+    
+    # Styling
+    
+    linter, registertest_stack, slashcmd, automationhook, 
+    updatecomment_stack, newrepo_stack, buildrecipe_stack [color=aliceblue, margin="0.75,0.25"];
+    
+    # Labels
+    
+    linter [label="/staged-recipes/.github/workflows/linter.yaml"]
+    
+    registertest_stack [label="/staged-recipes/.github/workflows/slash-command-dispatch.yaml
+    /staged-recipes/.github/workflows/run-recipe-test.yaml"]
+    
+    slashcmd [label="/recipe-prefect-action/action.yaml
+    /pangeo-forge-prefect/pangeo_forge_prefect/flow_manager.py::register_flow"]
+    
+    automationhook [label="/pangeo-forge-prefect/pangeo_forge_prefect/automation_hook_manager.py"]
+    
+    updatecomment_stack [label="/staged-recipes/.github/workflows/update-slash-command-comment.yaml"]
+    
+    newrepo_stack [label="/staged-recipes/.github/workflows/create-feedstock.yaml
+    /feedstock-creation-action/action.yaml"]
+    
+    buildrecipe_stack [label="/feedstock-template/.github/workflows/run-recipe.yaml"]
+
+    # Call stack connections 
+    
+    lintgate -> linter [arrowhead=none, style=dotted]
+    registertest -> registertest_stack [arrowhead=none, style=dotted]
+    runflow -> slashcmd [arrowhead=none, style=dotted]
+    flowexit -> automationhook [arrowhead=none, style=dotted]
+    updatecomment -> updatecomment_stack [arrowhead=none, style=dotted]
+    newrepo -> newrepo_stack [arrowhead=none, style=dotted]
+    buildrecipe -> buildrecipe_stack [arrowhead=none, style=dotted]
+    
+    {rank = same; lintgate; linter;}
+    {rank = same; registertest; registertest_stack;}
+    {rank = same; runflow; slashcmd;}
+    {rank = same; flowexit; automationhook;}
+    {rank = same; updatecomment; updatecomment_stack;}
+    {rank = same; newrepo; newrepo_stack;}
+    {rank = same; buildrecipe; buildrecipe_stack;}
+
+    */
+}
+
+

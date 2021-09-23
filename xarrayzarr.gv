@@ -40,10 +40,10 @@ digraph recipes {
 
 
 	cache_inputs:e -> cache_bucket:n;
-	prepare_target -> cache_bucket [arrowhead=none, color=purple, constraint=false];
+	cache_bucket -> prepare_target [arrowhead=none, color=forestgreen, constraint=false];
+	prepare_target -> arco_bucket [color=forestgreen];
 	store_chunks -> cache_bucket [arrowhead=none, color=purple, style=bold, constraint=false];
-	cache_bucket -> arco_bucket [color=purple, style=bold];
-	cache_bucket -> arco_bucket [color=purple];
+	store_chunks:e -> arco_bucket:n [color=purple, style=bold];
 	finalize_target -> arco_bucket [constraint=false]
 	{rank=same; finalize_target; arco_bucket}
 	{rank=same; prepare_target; cache_bucket}
