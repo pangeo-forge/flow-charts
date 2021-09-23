@@ -1,5 +1,5 @@
 digraph prof {
-    node [style="filled, rounded", shape=box, fontname="Roboto", fontsize=18, margin="0.5,0.25"];
+    node [style="filled, rounded", shape=box, fontname="Roboto", margin="0.5,0.25"];
     
     /* ------- COLOR-CODED NODE "CLASSES" ------- */
     
@@ -8,34 +8,33 @@ digraph prof {
     release [color=palegreen];
     
     /* Execution steps, flow control, etc. */
-    // lintgate, registertest, runflow, flowexit, flowsuccess, updatecomment, newrepo, buildrecipe, exitgate, stac [color=khaki];
-    lintgate, registertest, flowsuccess, newrepo, buildrecipe, exitgate, stac [color=khaki];
+    lintgate, registertest, runflow, flowexit, flowsuccess, updatecomment, newrepo, buildrecipe, exitgate, stac [color=khaki];
     
     /* Inline labels */
     Test, Full [color=white, margin="0,0"];
     
     /* Errors */
-    error0, error1 [color=pink, label="Error"];
+    error0, error1 [color=pink, label="error"];
     
     
     /* ------- NODE LABELS ------- */
     
-    pr [label="Recipe PR opened"];
-    commits0, commits1 [label="PR edits"];
-    lintgate [label="PR meets spec?"]
-    runrecipetest [label="Test execution"]
-    registertest [label="Register test Flow"]
-    // runflow [label="Run Flow"]
-    etl [label="Run ETL algorithm"]
-    // flowexit [label="POST exit state"]
-    // updatecomment [label="`/run-recipe-test` comment updated"]
-    flowsuccess [label="Success?"]
+    pr [label="PR opened against `/staged-recipes`"];
+    commits0, commits1 [label="More commits"];
+    lintgate [label="PR includes valid `recipe.py` and `meta.yaml`?"]
+    runrecipetest [label="`/run-recipe-test` command issued"]
+    registertest [label="Register recipe subset Flow"]
+    runflow [label="Run Prefect Flow"]
+    etl [label="ETL algorithm"]
+    flowexit [label="Exit state POSTed to GitHub API."]
+    updatecomment [label="`/run-recipe-test` comment updated"]
+    flowsuccess [label="Exit state == 'Success'?"]
     merge [label="Merge PR"]
     newrepo [label="Feedstock repo created"]
-    release [label="Tag and release Feedstock repo"]
-    buildrecipe [label="Register full Flow"]
+    release [label="Tag and release feedstock repo"]
+    buildrecipe [label="Register full recipe Flow"]
     exitgate [label="Flow type?"]
-    stac [label="Generate STAC object"]
+    stac [label="Generate STAC Object"]
     
     /* ------- GRAPH CONNECTIONS ------- */
     
@@ -47,33 +46,29 @@ digraph prof {
     commits0 -> lintgate
     lintgate -> runrecipetest [color=green]
     runrecipetest -> registertest
-    // registertest -> runflow
-    // runflow -> etl
-    registertest:s -> etl:n
-    // etl -> flowexit [arrowhead=none]
-    // flowexit -> exitgate [arrowhead=none]
-    etl -> exitgate [arrowhead=none]
+    registertest -> runflow
+    runflow -> etl
+    etl -> flowexit [arrowhead=none]
+    flowexit -> exitgate [arrowhead=none]
     exitgate -> Test [arrowhead=none]
-    // Test -> updatecomment
+    Test -> updatecomment
     exitgate -> Full [arrowhead=none]
     Full -> stac
-    stac -> Done
-    // updatecomment -> flowsuccess [arrowhead=none]
-    Test -> flowsuccess [arrowhead=none]
+    stac -> done
+    updatecomment -> flowsuccess [arrowhead=none]
     flowsuccess -> error1 [color=red]
     error1 -> commits1
     commits1 -> runrecipetest
     flowsuccess -> merge [color=green]
     merge -> newrepo [arrowhead=none]
-    newrepo -> release 
+    newrepo -> release
     release -> buildrecipe
-    // buildrecipe -> runflow
-    buildrecipe:s -> etl:n
+    buildrecipe -> runflow
     
     {rank = same; registertest; buildrecipe;}
     {rank = same; runrecipetest; release;}
     
-    /* ------- CALL STACK -------      
+    /* ------- CALL STACK -------      */
 
     
     # Styling
@@ -117,8 +112,6 @@ digraph prof {
     {rank = same; updatecomment; updatecomment_stack;}
     {rank = same; newrepo; newrepo_stack;}
     {rank = same; buildrecipe; buildrecipe_stack;}
-
-    */
 }
 
 
