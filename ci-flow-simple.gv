@@ -26,7 +26,7 @@ digraph prof {
     runrecipetest [label="Test execution"]
     registertest [label="Register test Flow"]
     // runflow [label="Run Flow"]
-    etl [label="Run ETL algorithm"]
+    execute [label="Execute Recipe"]
     // flowexit [label="POST exit state"]
     // updatecomment [label="`/run-recipe-test` comment updated"]
     flowsuccess [label="Success?"]
@@ -48,11 +48,11 @@ digraph prof {
     lintgate -> runrecipetest [color=green]
     runrecipetest -> registertest
     // registertest -> runflow
-    // runflow -> etl
-    registertest:s -> etl:n
-    // etl -> flowexit [arrowhead=none]
+    // runflow -> execute
+    registertest:s -> execute:n
+    // execute -> flowexit [arrowhead=none]
     // flowexit -> exitgate [arrowhead=none]
-    etl -> exitgate [arrowhead=none]
+    execute -> exitgate [arrowhead=none]
     exitgate -> Test [arrowhead=none]
     // Test -> updatecomment
     exitgate -> Full [arrowhead=none]
@@ -68,7 +68,7 @@ digraph prof {
     newrepo -> release 
     release -> buildrecipe
     // buildrecipe -> runflow
-    buildrecipe:s -> etl:n
+    buildrecipe:s -> execute:n
     
     {rank = same; registertest; buildrecipe;}
     {rank = same; runrecipetest; release;}
